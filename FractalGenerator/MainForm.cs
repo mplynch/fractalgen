@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace FractalGenerator
 {
@@ -44,6 +45,11 @@ namespace FractalGenerator
         private Mandelbrot mandelbrot;
 
         /// <summary>
+        /// A high-performance timer used to measure execution times.
+        /// </summary>
+        private Stopwatch stopwatch;
+
+        /// <summary>
         /// A flag denoting whether or not the application is in full screen mode.
         /// </summary>
         private bool fullScreenMode;
@@ -66,6 +72,10 @@ namespace FractalGenerator
 
             // Create the list to store generation metrics.
             this.metrics = new List<GenerationMetric>();
+
+            // Create a stopwatch and start it.
+            this.stopwatch = new Stopwatch();
+            this.stopwatch.Start();
         }
 
         #endregion
@@ -77,28 +87,28 @@ namespace FractalGenerator
         /// </summary>
         private void Draw()
         {
-            DateTime start, end;
+            long start, end;
             double seconds;
 
             // Set the concurrency mode of the generator.
             this.currentGenerator.Mode = this.concurrencyMode;
 
             // Get the start time.
-            start = DateTime.Now;
+            start = stopwatch.ElapsedMilliseconds;
 
             // Draw the image.
             this.pictureBox1.Image = this.currentGenerator.Create(
                 this.pictureBox1.Width, this.pictureBox1.Height);
 
             // Get the end time.
-            end = DateTime.Now;
+            end = stopwatch.ElapsedMilliseconds;
 
             // Display the resolution of the image.
             this.toolStripStatusLabelResolution.Text = this.pictureBox1.Width +
                 "x" + this.pictureBox1.Height;
 
             // Store the seconds to generate the fractal.
-            seconds = end.Subtract(start).TotalSeconds;
+            seconds = (end - start)/1000.0;
 
             // Display the running time in seconds.
             this.toolStripStatusLabelRunningTime.Text = seconds + "s";
@@ -116,17 +126,18 @@ namespace FractalGenerator
         {
             this.concurrencyMode = mode;
 
-            if (this.concurrencyMode == ConcurrencyMode.Parallel)
-            {
-                this.parallelToolStripMenuItem.Checked = true;
-                this.sequentialToolStripMenuItem.Checked = false;
-            }
+            this.parallelToolStripMenuItem.Checked = false;
+            this.sequentialToolStripMenuItem.Checked = false;
+            this.gPUToolStripMenuItem.Checked = false;
 
-            else
-            {
-                this.parallelToolStripMenuItem.Checked = false;
+            if (this.concurrencyMode == ConcurrencyMode.ParallelCPU)
+                this.parallelToolStripMenuItem.Checked = true;
+
+            else if (this.concurrencyMode == ConcurrencyMode.SequentialCPU)
                 this.sequentialToolStripMenuItem.Checked = true;
-            }
+
+            else if (this.concurrencyMode == ConcurrencyMode.GPU)
+                this.gPUToolStripMenuItem.Checked = true;
         }
 
         /// <summary>
@@ -238,6 +249,23 @@ namespace FractalGenerator
         }
 
         /// <summary>
+        /// Handles the Click event of the gpuToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">
+        /// The <see cref="System.EventArgs"/> instance containing the event
+        /// data.
+        /// </param>
+        private void gpuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Set the concurrency mode to parallel.
+            this.SetConcurrencyMode(ConcurrencyMode.GPU);
+
+            // Draw the current fractal.
+            this.Draw();
+        }
+
+        /// <summary>
         /// Handles the KeyPress event of the MainForm control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -270,7 +298,7 @@ namespace FractalGenerator
             this.SetCurrentGenerator(this.mandelbrot);
 
             // Initialize the concurrency mode.
-            this.SetConcurrencyMode(ConcurrencyMode.Parallel);
+            this.SetConcurrencyMode(ConcurrencyMode.ParallelCPU);
 
             // Draw the current fractal.
             this.Draw();
@@ -350,7 +378,7 @@ namespace FractalGenerator
         private void parallelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Set the concurrency mode to parallel.
-            this.SetConcurrencyMode(ConcurrencyMode.Parallel);
+            this.SetConcurrencyMode(ConcurrencyMode.ParallelCPU);
 
             // Draw the current fractal.
             this.Draw();
@@ -490,7 +518,7 @@ namespace FractalGenerator
         private void sequentialToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Set the concurrency mode to sequential.
-            this.SetConcurrencyMode(ConcurrencyMode.Sequential);
+            this.SetConcurrencyMode(ConcurrencyMode.SequentialCPU);
 
             // Draw the current fractal.
             this.Draw();

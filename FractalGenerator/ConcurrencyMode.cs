@@ -7,7 +7,8 @@ namespace FractalGenerator
 {
     public enum ConcurrencyMode
     {
-        Sequential,
-        Parallel
+        SequentialCPU,
+        ParallelCPU,
+        GPU
     }
 }

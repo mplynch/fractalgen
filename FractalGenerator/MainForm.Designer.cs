@@ -38,20 +38,21 @@
             this.parallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.res320x240ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.res640x480ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.res1024x768ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelRunningTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelResolution = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelSpacer = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
-            this.resolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.res320x240ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.res640x480ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.res1024x768ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.gPUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -112,7 +113,8 @@
             // 
             this.modeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sequentialToolStripMenuItem,
-            this.parallelToolStripMenuItem});
+            this.parallelToolStripMenuItem,
+            this.gPUToolStripMenuItem});
             this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
             this.modeToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.modeToolStripMenuItem.Text = "&Mode";
@@ -123,16 +125,16 @@
             this.sequentialToolStripMenuItem.CheckOnClick = true;
             this.sequentialToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sequentialToolStripMenuItem.Name = "sequentialToolStripMenuItem";
-            this.sequentialToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.sequentialToolStripMenuItem.Text = "&Sequential";
+            this.sequentialToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.sequentialToolStripMenuItem.Text = "&Sequential CPU";
             this.sequentialToolStripMenuItem.Click += new System.EventHandler(this.sequentialToolStripMenuItem_Click);
             // 
             // parallelToolStripMenuItem
             // 
             this.parallelToolStripMenuItem.CheckOnClick = true;
             this.parallelToolStripMenuItem.Name = "parallelToolStripMenuItem";
-            this.parallelToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.parallelToolStripMenuItem.Text = "&Parallel";
+            this.parallelToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.parallelToolStripMenuItem.Text = "&Parallel CPU";
             this.parallelToolStripMenuItem.Click += new System.EventHandler(this.parallelToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
@@ -150,22 +152,68 @@
             // 
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.fullScreenToolStripMenuItem.Text = "&Full Screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.fullScreenToolStripMenuItem_Click);
+            // 
+            // resolutionToolStripMenuItem
+            // 
+            this.resolutionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.res320x240ToolStripMenuItem,
+            this.res640x480ToolStripMenuItem,
+            this.res1024x768ToolStripMenuItem});
+            this.resolutionToolStripMenuItem.Name = "resolutionToolStripMenuItem";
+            this.resolutionToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.resolutionToolStripMenuItem.Text = "&Set Resolution";
+            // 
+            // res320x240ToolStripMenuItem
+            // 
+            this.res320x240ToolStripMenuItem.Name = "res320x240ToolStripMenuItem";
+            this.res320x240ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.res320x240ToolStripMenuItem.Text = "&320 x 240";
+            this.res320x240ToolStripMenuItem.Click += new System.EventHandler(this.res320x240ToolStripMenuItem_Click);
+            // 
+            // res640x480ToolStripMenuItem
+            // 
+            this.res640x480ToolStripMenuItem.Name = "res640x480ToolStripMenuItem";
+            this.res640x480ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.res640x480ToolStripMenuItem.Text = "&640 x 480";
+            this.res640x480ToolStripMenuItem.Click += new System.EventHandler(this.res640x480ToolStripMenuItem_Click);
+            // 
+            // res1024x768ToolStripMenuItem
+            // 
+            this.res1024x768ToolStripMenuItem.Name = "res1024x768ToolStripMenuItem";
+            this.res1024x768ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.res1024x768ToolStripMenuItem.Text = "&1024 x 768";
+            this.res1024x768ToolStripMenuItem.Click += new System.EventHandler(this.res1024x768ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(147, 6);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // reportToolStripMenuItem
+            // 
+            this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem});
+            this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.reportToolStripMenuItem.Text = "&Report";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -183,9 +231,9 @@
             // 
             // toolStripStatusLabelRunningTime
             // 
-            this.toolStripStatusLabelRunningTime.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelRunningTime.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusLabelRunningTime.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
             this.toolStripStatusLabelRunningTime.Name = "toolStripStatusLabelRunningTime";
             this.toolStripStatusLabelRunningTime.Size = new System.Drawing.Size(31, 19);
@@ -193,9 +241,9 @@
             // 
             // toolStripStatusLabelResolution
             // 
-            this.toolStripStatusLabelResolution.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabelResolution.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusLabelResolution.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
             this.toolStripStatusLabelResolution.Name = "toolStripStatusLabelResolution";
             this.toolStripStatusLabelResolution.Size = new System.Drawing.Size(64, 19);
@@ -213,57 +261,18 @@
             this.toolStripStatusLabelMousePosition.Size = new System.Drawing.Size(22, 19);
             this.toolStripStatusLabelMousePosition.Text = "0,0";
             // 
-            // resolutionToolStripMenuItem
-            // 
-            this.resolutionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.res320x240ToolStripMenuItem,
-            this.res640x480ToolStripMenuItem,
-            this.res1024x768ToolStripMenuItem});
-            this.resolutionToolStripMenuItem.Name = "resolutionToolStripMenuItem";
-            this.resolutionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.resolutionToolStripMenuItem.Text = "&Set Resolution";
-            // 
-            // res320x240ToolStripMenuItem
-            // 
-            this.res320x240ToolStripMenuItem.Name = "res320x240ToolStripMenuItem";
-            this.res320x240ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.res320x240ToolStripMenuItem.Text = "&320 x 240";
-            this.res320x240ToolStripMenuItem.Click += new System.EventHandler(this.res320x240ToolStripMenuItem_Click);
-            // 
-            // res640x480ToolStripMenuItem
-            // 
-            this.res640x480ToolStripMenuItem.Name = "res640x480ToolStripMenuItem";
-            this.res640x480ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.res640x480ToolStripMenuItem.Text = "&640 x 480";
-            this.res640x480ToolStripMenuItem.Click += new System.EventHandler(this.res640x480ToolStripMenuItem_Click);
-            // 
-            // res1024x768ToolStripMenuItem
-            // 
-            this.res1024x768ToolStripMenuItem.Name = "res1024x768ToolStripMenuItem";
-            this.res1024x768ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.res1024x768ToolStripMenuItem.Text = "&1024 x 768";
-            this.res1024x768ToolStripMenuItem.Click += new System.EventHandler(this.res1024x768ToolStripMenuItem_Click);
-            // 
-            // reportToolStripMenuItem
-            // 
-            this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToolStripMenuItem});
-            this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.reportToolStripMenuItem.Text = "&Report";
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "csv";
             this.saveFileDialog1.Filter = "CSV Files|*.csv|All files|*.*";
             this.saveFileDialog1.Title = "Save";
+            // 
+            // gPUToolStripMenuItem
+            // 
+            this.gPUToolStripMenuItem.Name = "gPUToolStripMenuItem";
+            this.gPUToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.gPUToolStripMenuItem.Text = "&GPU";
+            this.gPUToolStripMenuItem.Click += new System.EventHandler(this.gpuToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -317,6 +326,7 @@
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem gPUToolStripMenuItem;
     }
 }
 

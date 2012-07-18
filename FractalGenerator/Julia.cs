@@ -29,7 +29,7 @@ namespace FractalGenerator
         /// </summary>
         public Julia()
         {
-            this.Mode = ConcurrencyMode.Sequential;
+            this.Mode = ConcurrencyMode.SequentialCPU;
 
             this.options = new ParallelOptions();
 
@@ -48,7 +48,7 @@ namespace FractalGenerator
         /// <returns>An image containing the Julia set.</returns>
         public Image Create(int width, int height)
         {
-            if (this.Mode == ConcurrencyMode.Sequential)
+            if (this.Mode == ConcurrencyMode.SequentialCPU)
             {
                 return this.CreateSequential(width, height);
             }
