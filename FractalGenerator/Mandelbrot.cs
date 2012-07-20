@@ -195,6 +195,7 @@ namespace FractalGenerator
             kernel.SetValueArgument<int>(6, width);
             kernel.SetMemoryArgument(7, kernelOutput);
 
+            // TODO: Scale work group and work item sizes to fit the resolution.
             commands.Execute(kernel, null, new long[] { width, height },
                 null, events);
 
