@@ -28,6 +28,20 @@ namespace FractalGenerator
 
         private ParallelOptions options;
 
+        private ComputePlatform platform;
+
+        private ComputeContextPropertyList properties;
+
+        private ComputeContext context;
+
+        private ComputeProgram program;
+
+        private ComputeKernel kernel;
+
+        private ComputeCommandQueue commands;
+
+        private ComputeEventList events;
+
         #endregion
 
         #region Constructors
@@ -42,6 +56,22 @@ namespace FractalGenerator
             this.options = new ParallelOptions();
 
             this.options.MaxDegreeOfParallelism = Environment.ProcessorCount;
+
+            // Initialize OpenCL.
+            platform = ComputePlatform.Platforms[0];
+            properties = new ComputeContextPropertyList(platform);
+            context = new ComputeContext(platform.Devices,
+                properties, null, IntPtr.Zero);
+
+            // Create the OpenCL kernel.
+            program = new ComputeProgram(context, new string[] { kernelSource });
+            program.Build(null, "-cl-mad-enable", null, IntPtr.Zero);
+            kernel = program.CreateKernel("mandelbrot");
+
+            // Create objects needed for kernel launch/execution.
+            commands = new ComputeCommandQueue(context,
+                context.Devices[0], ComputeCommandQueueFlags.None);
+            events = new ComputeEventList();
         }
 
         #endregion
@@ -150,23 +180,7 @@ namespace FractalGenerator
         private Image CreateGPU(int width, int height)
         {
             Bitmap image;
-
-            // Initialize OpenCL.
-            ComputePlatform platform = ComputePlatform.Platforms[0];
-            ComputeContextPropertyList properties = 
-                new ComputeContextPropertyList(platform);
-            ComputeContext context = new ComputeContext(platform.Devices,
-                properties, null, IntPtr.Zero);
-
-            // Create the OpenCL kernel.
-            ComputeProgram program = new ComputeProgram(context, new string[] { kernelSource });
-            program.Build(null, null, null, IntPtr.Zero);
-            ComputeKernel kernel = program.CreateKernel("mandelbrot");
-
-            // Create objects needed for kernel launch/execution.
-            ComputeCommandQueue commands = new ComputeCommandQueue(context,
-                context.Devices[0], ComputeCommandQueueFlags.None);
-            ComputeEventList events = new ComputeEventList();
+            
             // Initialize the position of the set.
             float realLeft = -2.0f;
             float realRight = 1.0f;

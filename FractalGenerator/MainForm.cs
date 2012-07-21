@@ -88,7 +88,7 @@ namespace FractalGenerator
         private void Draw()
         {
             long start, end;
-            double seconds;
+            double milliseconds;
 
             // Set the concurrency mode of the generator.
             this.currentGenerator.Mode = this.concurrencyMode;
@@ -108,15 +108,15 @@ namespace FractalGenerator
                 "x" + this.pictureBox1.Height;
 
             // Store the seconds to generate the fractal.
-            seconds = (end - start)/1000.0;
+            milliseconds = (end - start);
 
-            // Display the running time in seconds.
-            this.toolStripStatusLabelRunningTime.Text = seconds + "s";
+            // Display the running time in milliseconds.
+            this.toolStripStatusLabelRunningTime.Text = milliseconds + "ms";
 
             // Add a generation metric.
             this.metrics.Add(new GenerationMetric(this.currentGenerator.Name,
                 this.concurrencyMode, this.pictureBox1.Width,
-                this.pictureBox1.Height, seconds));
+                this.pictureBox1.Height, milliseconds));
         }
 
         /// <summary>

@@ -36,6 +36,7 @@
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sequentialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.parallelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gPUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +53,6 @@
             this.toolStripStatusLabelSpacer = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.gPUToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -136,6 +136,13 @@
             this.parallelToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.parallelToolStripMenuItem.Text = "&Parallel CPU";
             this.parallelToolStripMenuItem.Click += new System.EventHandler(this.parallelToolStripMenuItem_Click);
+            // 
+            // gPUToolStripMenuItem
+            // 
+            this.gPUToolStripMenuItem.Name = "gPUToolStripMenuItem";
+            this.gPUToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.gPUToolStripMenuItem.Text = "&GPU";
+            this.gPUToolStripMenuItem.Click += new System.EventHandler(this.gpuToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -267,13 +274,6 @@
             this.saveFileDialog1.Filter = "CSV Files|*.csv|All files|*.*";
             this.saveFileDialog1.Title = "Save";
             // 
-            // gPUToolStripMenuItem
-            // 
-            this.gPUToolStripMenuItem.Name = "gPUToolStripMenuItem";
-            this.gPUToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.gPUToolStripMenuItem.Text = "&GPU";
-            this.gPUToolStripMenuItem.Click += new System.EventHandler(this.gpuToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,7 +283,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Fractal Generator";
             this.Load += new System.EventHandler(this.MainForm_Load);

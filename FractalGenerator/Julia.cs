@@ -27,6 +27,20 @@ namespace FractalGenerator
 
         private ParallelOptions options;
 
+        private ComputePlatform platform;
+        
+        private ComputeContextPropertyList properties;
+        
+        private ComputeContext context;
+        
+        private ComputeProgram program;
+        
+        private ComputeKernel kernel;
+        
+        private ComputeCommandQueue commands;
+        
+        private ComputeEventList events;
+
         #endregion
 
         #region Constructors
@@ -41,6 +55,22 @@ namespace FractalGenerator
             this.options = new ParallelOptions();
 
             this.options.MaxDegreeOfParallelism = Environment.ProcessorCount;
+
+            // Initialize OpenCL.
+            platform = ComputePlatform.Platforms[0];
+            properties = new ComputeContextPropertyList(platform);
+            context = new ComputeContext(platform.Devices,
+                properties, null, IntPtr.Zero);
+            
+            // Create the OpenCL kernel.
+            program = new ComputeProgram(context, new string[] { kernelSource });
+            program.Build(null, "-cl-mad-enable", null, IntPtr.Zero);
+            kernel = program.CreateKernel("julia");
+
+            // Create objects needed for kernel launch/execution.
+            commands = new ComputeCommandQueue(context,
+                context.Devices[0], ComputeCommandQueueFlags.None);
+            events = new ComputeEventList();
         }
 
         #endregion
@@ -48,7 +78,7 @@ namespace FractalGenerator
         #region Kernels
 
         private static string kernelSource = @"
-            __kernel void mandelbrot(const float realFactor,
+            __kernel void julia(const float realFactor,
             const float imaginaryFactor, const float realLeft,
             const float imaginaryBottom, const float imaginaryTop, 
             const unsigned int maxIterations, const unsigned int width,
@@ -151,23 +181,6 @@ namespace FractalGenerator
         {
             Bitmap image;
 
-            // Initialize OpenCL.
-            ComputePlatform platform = ComputePlatform.Platforms[0];
-            ComputeContextPropertyList properties =
-                new ComputeContextPropertyList(platform);
-            ComputeContext context = new ComputeContext(platform.Devices,
-                properties, null, IntPtr.Zero);
-
-            // Create the OpenCL kernel.
-            ComputeProgram program = new ComputeProgram(context, new string[] { kernelSource });
-            program.Build(null, null, null, IntPtr.Zero);
-            ComputeKernel kernel = program.CreateKernel("mandelbrot");
-
-            // Create objects needed for kernel launch/execution.
-            ComputeCommandQueue commands = new ComputeCommandQueue(context,
-                context.Devices[0], ComputeCommandQueueFlags.None);
-            ComputeEventList events = new ComputeEventList();
-
             // Initialize the position of the set.
             float realLeft = -1.5f;
             float realRight = 1.5f;
@@ -197,7 +210,7 @@ namespace FractalGenerator
             kernel.SetMemoryArgument(7, kernelOutput);
 
             // TODO: Scale work group and work item sizes to fit the resolution.
-            commands.Execute(kernel, null, new long[] { width, height },
+            commands.Execute(kernel, null, new long[] { width, height }, 
                 null, events);
 
             // Create a pinned buffer for kernel output.
