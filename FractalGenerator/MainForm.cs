@@ -27,7 +27,7 @@ namespace FractalGenerator
         /// <summary>
         /// The fractal generator currently in use.
         /// </summary>
-        private IFractalGenerator currentGenerator;
+        private FractalGenerator currentGenerator;
 
         /// <summary>
         /// The Julia set generator.
@@ -83,7 +83,7 @@ namespace FractalGenerator
         #region Methods
 
         /// <summary>
-        /// Draws the Mandelbrot set.
+        /// Draws the selected fractal.
         /// </summary>
         private void Draw()
         {
@@ -114,9 +114,11 @@ namespace FractalGenerator
             this.toolStripStatusLabelRunningTime.Text = milliseconds + "ms";
 
             // Add a generation metric.
-            this.metrics.Add(new GenerationMetric(this.currentGenerator.Name,
+            this.metrics.Add(new GenerationMetric(this.currentGenerator.FractalType,
                 this.concurrencyMode, this.pictureBox1.Width,
                 this.pictureBox1.Height, milliseconds));
+
+            this.Refresh();
         }
 
         /// <summary>
@@ -144,7 +146,7 @@ namespace FractalGenerator
         /// Sets the current fractal generator.
         /// </summary>
         /// <param name="generator">The generator.</param>
-        private void SetCurrentGenerator(IFractalGenerator generator)
+        private void SetCurrentGenerator(FractalGenerator generator)
         {
             this.currentGenerator = generator;
 
@@ -191,9 +193,6 @@ namespace FractalGenerator
             /* Set the height of the form to get the client area to the
              * specified resolution. */
             this.Height = height + offsetHeight;
-
-            // Draw the fractal.
-            this.Draw();
         }
 
         /// <summary>
@@ -234,6 +233,21 @@ namespace FractalGenerator
         #endregion
 
         #region Event Handlers
+
+        /// <summary>
+        /// Handles the Click event of the chartToolStripMenuItem control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance
+        /// containing the event data.</param>
+        private void chartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenerationMetricChartForm chartForm = new GenerationMetricChartForm();
+
+            chartForm.LoadMetrics(this.metrics);
+
+            chartForm.ShowDialog(this);
+        }
 
         /// <summary>
         /// Handles the Click event of the fullScreenToolStripMenuItem control.
@@ -438,6 +452,7 @@ namespace FractalGenerator
         private void res320x240ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SetResolution(320, 240);
+            this.Draw();
         }
 
         /// <summary>
@@ -452,6 +467,7 @@ namespace FractalGenerator
             EventArgs e)
         {
             this.SetResolution(640, 480);
+            this.Draw();
         }
 
         /// <summary>
@@ -466,6 +482,7 @@ namespace FractalGenerator
             EventArgs e)
         {
             this.SetResolution(1024, 768);
+            this.Draw();
         }
 
         /// <summary>
@@ -525,5 +542,62 @@ namespace FractalGenerator
         }
 
         #endregion
+
+        private void runToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fractalToolStripMenuItem.Enabled = false;
+            modeToolStripMenuItem.Enabled = false;
+            viewToolStripMenuItem.Enabled = false;
+            benchmarkingToolStripMenuItem.Enabled = false;
+            reportToolStripMenuItem.Enabled = false;
+
+            Size[] sizes = new Size[] {
+                new Size(320, 240),
+                new Size(640, 480),
+                new Size(800, 600),
+                new Size(1024, 768)
+            };
+
+            ConcurrencyMode[] modes = new ConcurrencyMode[] {
+                ConcurrencyMode.SequentialCPU,
+                ConcurrencyMode.ParallelCPU,
+                ConcurrencyMode.GPU
+            };
+
+            FractalGenerator[] generators = new FractalGenerator[] {
+                new Julia(),
+                new Mandelbrot()
+            };
+
+            this.metrics.Clear();
+
+            foreach (Size size in sizes)
+            {
+                this.SetResolution(size.Width, size.Height);
+
+                foreach (ConcurrencyMode mode in modes)
+                {
+                    this.SetConcurrencyMode(mode);
+
+                    foreach (FractalGenerator generator in generators)
+                    {
+                        this.SetCurrentGenerator(generator);
+                        this.Draw();
+                    }
+                }
+            }
+
+            fractalToolStripMenuItem.Enabled = true;
+            modeToolStripMenuItem.Enabled = true;
+            viewToolStripMenuItem.Enabled = true;
+            benchmarkingToolStripMenuItem.Enabled = true;
+            reportToolStripMenuItem.Enabled = true;
+
+            GenerationMetricChartForm chartForm = new GenerationMetricChartForm();
+
+            chartForm.LoadMetrics(this.metrics);
+
+            chartForm.ShowDialog(this);
+        }
     }
 }

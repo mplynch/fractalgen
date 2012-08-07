@@ -15,9 +15,9 @@ namespace FractalGenerator
         private ConcurrencyMode mode;
 
         /// <summary>
-        /// The number of seconds required to process the fractal.
+        /// The number of milliseconds required to process the fractal.
         /// </summary>
-        private double seconds;
+        private double milliseconds;
 
         /// <summary>
         /// The height of the fractal image.
@@ -42,12 +42,13 @@ namespace FractalGenerator
         /// Initializes a new instance of the <see cref="GenerationMetric"/>
         /// class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="seconds">The seconds.</param>
+        /// <param name="type">The type of fractal generated.</param>
+        /// <param name="mode">The ConcurrencyMode used to generate the image.</param>
+        /// <param name="width">The width of the generated image.</param>
+        /// <param name="height">The height of the generated image.</param>
+        /// <param name="milliseconds">The milliseconds required to generate the image.</param>
         public GenerationMetric(string type, ConcurrencyMode mode, int width,
-            int height, double seconds)
+            int height, double milliseconds)
         {
             this.type = type;
 
@@ -57,7 +58,7 @@ namespace FractalGenerator
 
             this.height = height;
 
-            this.seconds = seconds;
+            this.milliseconds = milliseconds;
         }
 
         #endregion
@@ -74,7 +75,7 @@ namespace FractalGenerator
         public override string ToString()
         {
             return (type + "," + mode.ToString() + "," + width + "x" + height
-                + "," + seconds);
+                + "," + milliseconds);
         }
 
         #endregion
@@ -90,6 +91,61 @@ namespace FractalGenerator
             get
             {
                 return "Type,Mode,Resolution,Running Time";
+            }
+        }
+
+        /// <summary>
+        /// The height of the generated image.
+        /// </summary>
+        public int Height
+        {
+            get
+            {
+                return this.height;
+            }
+        }
+
+        /// <summary>
+        /// The ConcurrencyMode used to generate the image.
+        /// </summary>
+        public ConcurrencyMode Mode
+        {
+            get
+            {
+                return this.mode;
+            }
+        }
+
+        /// <summary>
+        /// The number of milliseconds required to generate the image.
+        /// </summary>
+        public double Milliseconds
+        {
+            get
+            {
+                return this.milliseconds;
+            }
+        }
+
+        /// <summary>
+        /// The type of fractal generated.
+        /// </summary>
+        public string Type
+        {
+            get
+            {
+                return this.type;
+            }
+        }
+
+        /// <summary>
+        /// The width of the generated image.
+        /// </summary>
+        public int Width
+        {
+            get
+            {
+                return this.width;
             }
         }
 
